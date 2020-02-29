@@ -5,7 +5,12 @@
     <h1>
         Linggo App
     </h1>
+
 </head>
+
+<! Creates the placeholer box for google hangouts>
+<! Hangouts api would be implimented in this area>
+
 <div style="padding-left: 50px">
     <svg width="400" height="200" >
         <rect width="300" height="400" ;margin:0 auto; style="fill:rgb(75, 75, 80);stroke-width:3;stroke:rgb(0,0,0)" />
@@ -14,21 +19,17 @@
       </svg>
    
 
-    Notepad
-    
-    <textarea id="notepad" rows="10" cols="50">
-    Take a note
-    </textarea>
-    
-    
-    
+  
     
 </div>
+
 <div>
-    <h1>
-         
-    </h1> 
+    <h1>     </h1>  <! using this as a spacer>
 </div>
+
+<! Second box for webcam placeholder is here>
+<! OpenCV or some 2 way video chat api's can be used here to view own webcam>
+
 <div style="padding-left: 50px" >
    
     <svg width="400" height="200" >
@@ -36,6 +37,8 @@
         <text x="5" y="25" font-family="Verdana" font-size="12" fill="white">Placeholder for webcam</text>
       </svg>
 </div>
+
+<! images and slider for the microphone, volume and hang up button are here>
 
 <div style="padding-left: 50px"  >
 
@@ -50,9 +53,48 @@
         
 
 </div>
+ 
+<! Notepad area is created here>
 
+<head>
 
+<! defines the javascript source used for note area>
 
+    <title>Note area</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    </head>
+    <body>
+
+<! creates a note area for multiple users to add notes and adds date and time to each note>
+   
+   <script type="text/javascript">
+    $(document).ready(function() {
+    
+        var socket = io.connect('http://127.0.0.1:5000');
+    
+        socket.on('connect', function() {
+            socket.send('Take a note');
+        });
+    
+        socket.on('message', function(msg) {
+            var date = new Date(); 
+            
+            $("#messages").append('<li>'+msg, date +'</li>');
+            console.log('Received note');
+        });
+    
+        $('#sendbutton').on('click', function() {
+            socket.send($('#myMessage').val());
+            $('#myMessage').val('');
+        });
+        
+    });
+    </script>
+    <ul id="messages"></ul>
+    <input type="text" id="myMessage">
+    <button id="sendbutton">Send</button>
+    </body>
 </div>
 
 </html>
